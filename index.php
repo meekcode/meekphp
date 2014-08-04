@@ -1,20 +1,18 @@
 <?php
 
-/******************************************************************************/
-
-/** comment these out to disable errors **/
+/* enable error reporting */
 
 ini_set('error_reporting', E_ALL);
 
-ini_set('display_errors', 'On'); 
+ini_set('display_errors', 'On');
 
-/** define file path on server for meekphp **/
+/* save server path */
 
 define("__PATH__", realpath(dirname(__FILE__)) . '/');
 
-/** run config file **/
+/* include system files */
 
-include(__PATH__ . 'config.php');
+require_once(__PATH__ . 'meek/object.php');
 
-/******************************************************************************/
+require_once(__PATH__ . 'config.php');
 
