@@ -14,5 +14,9 @@ define("__PATH__", realpath(dirname(__FILE__)) . '/');
 
 require_once(__PATH__ . 'meek/object.php');
 
+require_once(__PATH__ . 'meek/singleton.php');
+
+/* include application script */
+
 require_once(__PATH__ . 'config.php');
 
