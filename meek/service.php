@@ -1,8 +1,8 @@
 <?php
 /**
- * <meek/module.php>
+ * <meek/service.php>
  * 
- * This file contains the meekModule class.
+ * This file contains the meekService class.
  * 
  * <Licence>
  * 
@@ -27,28 +27,30 @@
  */
 
 /**
- * This is the base class for all modules used in meekphp. 
+ * This is the base class for all services used in meekphp. 
  * 
- * It acts as a parent to a child object and shares public methods from that
- * child. It also acts as a data store for the child. Module classes are 
- * loaded by the kernel and are access through the kernel __get method.
- * 
- * @subpackage meekModule
+ * @subpackage meekService
  */
-abstract class meekModule extends meekObject {
+abstract class meekService extends meekObject {
     
     /**
-     * @var meekModuleChild $child Reference to child object.
+     * @var meekService $child Reference to child object.
      */
     private $child = null;
     
     /**
-     * @var mixed[] $data Properties of the module.
+     * @var mixed[] $data Properties of the service.
      */
     private $data = array();
+    
+    /**
+     * @var meekService $parent Reference to parent object.
+     */
+    private $parent = null;
 
     /**
-     * Public child methods are called if no method exists in module.
+     * Public methods are called from child ojbect if this object is a parent 
+     * and requested method doesn't exist in object.
      * 
      * @param string $_name Method name.
      * @param mixed[] $_args Method parameters.
@@ -61,7 +63,7 @@ abstract class meekModule extends meekObject {
             return (null);
         }
         
-        /* if method doesn't exists then return null */
+        /* if method doesn't exist in child object then return null */
         if (method_exists ($this->child, $_name) == false) {
             return (null);
         }
@@ -72,29 +74,38 @@ abstract class meekModule extends meekObject {
     }
     
     /**
-     * Finalise the constructor and call overloadable init method.
+     * Finalised constructor saves parent object reference and calls 
+     * overloadable init method.
+     * 
+     * @param meekService $_parent Reference to parent.
      */
-    final public function __construct() {
+    final public function __construct($_parent = null) {
+        $this->parent = $_parent;
         $this->_init();
     }
     
     /**
-     * Finalise the destructor and call overloadable kill method.
+     * Finalised destructor calls overloadable kill method.
      */
     final public function __destruct() {
         $this->_kill();
     }
     
     /**
-     * Accessor for module properties.
+     * Accessor for service properties.
      * 
      * @param string $_name Property name.
      * @return mixed|null Return property value or null.
      */
     final public function __get($_name)
     {
-        /* if property exists then return it, otherwise return null */
+        /* if parent is present, access parent properties */
         $name = strtolower($_name);
+        if ($this->parent != null) {
+            return ($this->parent->$name);
+        }
+        
+        /* if not and property exists then return it, otherwise return null */
         if (array_key_exists($name, $this->data) == true) {
             return ($this->data[$name]);
         }
@@ -102,21 +113,28 @@ abstract class meekModule extends meekObject {
     }
     
     /**
-     * Mutator for module properties.
+     * Mutator for service properties.
      * 
      * @param string $_name Property name.
      * @param mixed $_value Property value.
      * @return mixed Return value set.
      */
     final public function __set($_name, $_value) {
+        
+        /* if parent is present, mutate parent properties */
         $name = strtolower($_name);
+        if ($this->parent != null) {
+            return ($this->parent->$name = $_value);
+        }
+        
+        /* if not then set and return property */
         return ($this->data[$name] = $_value);
     }
     
     /**
      * Reference to child object.
      * 
-     * @return meekModuleChild|null
+     * @return meekService|null
      */
     final protected function _child() {
         return ($this->child);
@@ -148,6 +166,15 @@ abstract class meekModule extends meekObject {
     }
     
     /**
+     * Return reference to parent object.
+     * 
+     * @return meekService Reference to parent object.
+     */
+    final public function _parent() {
+        return ($this->parent);
+    }
+    
+    /**
      * Loads a child class file and then creates an instance of that class.
      * 
      * @param string $_name Name of the child class to load.
@@ -158,7 +185,7 @@ abstract class meekModule extends meekObject {
         /* load child class file, return false on failure */
         $name = strtolower($_name);
         $class = strtolower(substr(get_class($this), 6));
-        $file = __PATH__ . 'modules/' . $class . '/' . $name . '.php';
+        $file = __PATH__ . 'services/' . $class . '/' . $name . '.php';
         if (file_exists($file) == false) {
             return (false);
         }

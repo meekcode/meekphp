@@ -29,8 +29,5 @@
  * @link       https://github.com/meekcode/meekphp/
  */
 
-/* this is to show some sign of life and should be deleted */
-echo('Running...');
-
 /* application code goes here */
 
