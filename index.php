@@ -40,6 +40,7 @@ define("__PATH__", realpath(dirname(__FILE__)) . '/');
 /* load meekphp system class files */
 require_once(__PATH__ . 'meek/object.php');
 require_once(__PATH__ . 'meek/singleton.php');
+require_once(__PATH__ . 'meek/module.php');
 
 /* Run application script */
 require_once(__PATH__ . 'config.php');
