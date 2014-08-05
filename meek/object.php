@@ -37,6 +37,15 @@
 abstract class meekObject {
     
     /**
+     * Return reference to kernel.
+     * 
+     * @return meekKernel
+     */
+    final protected function _meek() {
+        return (meekKernel::instance());
+    }
+    
+    /**
      * Redirect the browser to another URL.
      * 
      * @param string $_url

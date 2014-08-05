@@ -2,10 +2,10 @@
 /**
  * <config.php>
  * 
- * This file contains the application script.
+ * This file contains the site script.
  * 
- * All modules and their config are to be placed in this file as well as the
- * running of the kernel to load controllers.
+ * All loading of services and their configuration are to be placed in this 
+ * file as well as the running of commands.
  * 
  * <Licence>
  * 
@@ -29,8 +29,9 @@
  * @link       https://github.com/meekcode/meekphp/
  */
 
-/* application code goes here */
-$command = '';
-if (isset($_GET['u']) == true) $command = $_GET['u'];
-meekKernel::instance()->run($command);
+/* load example service */
+meekKernel::instance()->load('example');
+
+/* run default command "index/index" */
+meekKernel::instance()->run();
 

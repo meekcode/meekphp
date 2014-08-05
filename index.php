@@ -30,9 +30,9 @@
  * @link       https://github.com/meekcode/meekphp/
  */
 
-/* enable error reporting */
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 'On');
+/* enable/disable error reporting */
+// ini_set('error_reporting', E_ALL);
+// ini_set('display_errors', 'On');
 
 /* save current server path */
 define("__PATH__", realpath(dirname(__FILE__)) . '/');
@@ -44,6 +44,6 @@ require_once(__PATH__ . 'meek/service.php');
 require_once(__PATH__ . 'meek/application.php');
 require_once(__PATH__ . 'meek/kernel.php');
 
-/* Run application script */
+/* Run config script */
 require_once(__PATH__ . 'config.php');
 

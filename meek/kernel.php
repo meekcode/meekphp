@@ -27,7 +27,7 @@
  */
 
 /**
- * Kernel object for the framework. Loads services and provides access to them
+ * Kernel for the framework. Loads services and provides access to them
  * through __get magic method. Kernel also loads applications and runs specific
  * tasks on request.
  * 
@@ -36,9 +36,9 @@
 final class meekKernel extends meekSingleton {
     
     /**
-     * @var meekModule[] $modules Array of loaded modules.
+     * @var meekService[] $services Array of loaded services.
      */
-    private $modules = array();
+    private $services = array();
     
     /**
      * @var boolean $running Used to block recursion in run method.
@@ -46,52 +46,52 @@ final class meekKernel extends meekSingleton {
     private $running = false;
     
     /**
-     * Accessor for kernel modules.
+     * Accessor for kernel services.
      * 
-     * @param string $_name Module name.
-     * @return meekModule|null Reference to module or null on failure.
+     * @param string $_name Service name.
+     * @return meekService|null Reference to service or null on failure.
      */
     final public function __get($_name) {
         
-        /* if module name is valid, return reference to module */
+        /* if service name is valid, return reference to service */
         $name = strtolower($_name);
-        if (array_key_exists($name, $this->modules) == true) {
-            return ($this->modules[$name]);
+        if (array_key_exists($name, $this->services) == true) {
+            return ($this->services[$name]);
         }
         
-        /* if module name isn't valid, return null */
+        /* if service name isn't valid, return null */
         return (null);
     }
     
     /**
-     * Loads a module class file and then creates an instance of that class.
+     * Loads a service class file and then creates an instance of that class.
      * 
-     * @param string $_name Name of the module class to load.
+     * @param string $_name Name of the service class to load.
      * @return boolean True on successful, false on failure.
      */
     final public function load($_name) {    
         
-        /* if module name already loaded, return true */
+        /* if service name already loaded, return true */
         $name = strtolower($_name);
-        if (array_key_exists($name, $this->modules) == true) {
+        if (array_key_exists($name, $this->services) == true) {
             return (true);
         }
         
-        /* load module class file, return false on failure */
-        $file = __PATH__ . 'modules/' . $name . '/' . $name . '.php';
+        /* load service class file, return false on failure */
+        $file = __PATH__ . 'services/' . $name . '/' . $name . '.php';
         if (file_exists($file) == false) {
             return (false);
         }
         include_once ($file);
         
-        /* check if child class has be defined, return false on failure */
-        $class = 'module' . $name;
+        /* check if service class has be defined, return false on failure */
+        $class = 'service' . $name;
         if (class_exists($class) == false) {
             return (false);
         }
         
         /* create instance of class, save reference and return true */
-        $this->modules[$name] = new $class();
+        $this->services[$name] = new $class();
         return (true);
     }
     
@@ -110,11 +110,11 @@ final class meekKernel extends meekSingleton {
         $this->running = true;
     
         /* break up command into components */
-        $command = explode('/', ltrim($_command, '/'));
+        $command = explode('/', ltrim($_command . '', '/'));
         
         /* load application class file, return false on failure */
         $name = 'index';
-        if (count($command) > 0) {
+        if (strlen($command[0]) > 0) {
             $name = strtolower($command[0]);
         }
         $file = __PATH__ . 'applications/' . $name . '/' . $name . '.php';

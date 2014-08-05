@@ -27,7 +27,7 @@
  */
 
 /**
- * This is the base class for all services used in meekphp. 
+ * This is the base class for all services to be used in meekphp. 
  * 
  * @subpackage meekService
  */
