@@ -41,6 +41,7 @@ define("__PATH__", realpath(dirname(__FILE__)) . '/');
 require_once(__PATH__ . 'meek/object.php');
 require_once(__PATH__ . 'meek/singleton.php');
 require_once(__PATH__ . 'meek/service.php');
+require_once(__PATH__ . 'meek/application.php');
 require_once(__PATH__ . 'meek/kernel.php');
 
 /* Run application script */

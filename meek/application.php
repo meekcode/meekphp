@@ -1,11 +1,8 @@
 <?php
 /**
- * <config.php>
- * 
- * This file contains the application script.
- * 
- * All modules and their config are to be placed in this file as well as the
- * running of the kernel to load controllers.
+ * <meek/application.php>
+ *
+ * This file contains the meekApplication base class.
  * 
  * <Licence>
  * 
@@ -29,8 +26,12 @@
  * @link       https://github.com/meekcode/meekphp/
  */
 
-/* application code goes here */
-$command = '';
-if (isset($_GET['u']) == true) $command = $_GET['u'];
-meekKernel::instance()->run($command);
+/**
+ * This is the base class for all applications to be used in meekphp.
+ * 
+ * @subpackage meekApplication
+ */
+abstract class meekApplication extends meekObject {
+    
+}
 

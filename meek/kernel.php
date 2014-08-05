@@ -25,13 +25,25 @@
  * @license    http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @link       https://github.com/meekcode/meekphp/
  */
- 
+
+/**
+ * Kernel object for the framework. Loads services and provides access to them
+ * through __get magic method. Kernel also loads applications and runs specific
+ * tasks on request.
+ * 
+ * @subpackage meekKernel
+ */
 final class meekKernel extends meekSingleton {
     
     /**
      * @var meekModule[] $modules Array of loaded modules.
      */
     private $modules = array();
+    
+    /**
+     * @var boolean $running Used to block recursion in run method.
+     */
+    private $running = false;
     
     /**
      * Accessor for kernel modules.
@@ -84,7 +96,60 @@ final class meekKernel extends meekSingleton {
     }
     
     /**
+     * Process and run a command.
      * 
+     * @param string $_command Command string to process and run.
+     * @return boolean 
      */
+    final public function run($_command = '') {
+        
+        /* block recursion */
+        if ($this->running == true) {
+            return (false);
+        }
+        $this->running = true;
+    
+        /* break up command into components */
+        $command = explode('/', ltrim($_command, '/'));
+        
+        /* load application class file, return false on failure */
+        $name = 'index';
+        if (count($command) > 0) {
+            $name = strtolower($command[0]);
+        }
+        $file = __PATH__ . 'applications/' . $name . '/' . $name . '.php';
+        if (file_exists($file) == false) {
+            return ($this->running = false);
+        }
+        include_once ($file);
+        
+        /* create instance of application, return false on failure */
+        $class = 'application' . $name;
+        if (class_exists($class) == false) {
+            return ($this->running = false);
+        }
+        $application = new $class();
+        
+        /* run application task, return false of failure or save result */
+        $task = 'index';
+        if (count($command) > 1) {
+            $task = strtolower($command[1]);
+        }
+        if (method_exists($application, $task) == false) {
+            return ($this->running = false);
+        }
+        $parameters = array();
+        for ($i = 0; $i < count($command); $i++) {
+            if ($i > 1) {
+                $parameters[$i-2] = $command[$i];
+            }
+        }
+        $function = array($application, $task);
+        $result = call_user_func_array($function, $parameters);
+        
+        /* unblock recursion and return result */
+        $this->running = false;
+        return ($result);
+    }
 }
 
