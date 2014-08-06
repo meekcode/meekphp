@@ -170,8 +170,17 @@ abstract class meekService extends meekObject {
      * 
      * @return meekService Reference to parent object.
      */
-    final public function _parent() {
+    final protected function _parent() {
         return ($this->parent);
+    }
+    
+    /**
+     * Clear properties array.
+     * 
+     * @return void
+     */
+    final protected function _clear() {
+        $this->data = array();
     }
     
     /**
