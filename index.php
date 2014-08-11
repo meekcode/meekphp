@@ -1,16 +1,16 @@
 <?php
 /**
  * <index.php>
- * 
+ *
  * This file is the entry point to the framework.
- * 
+ *
  * Error reporting is enabled/disabled, current server path is saved, meekphp
  * system class files are loaded and then finally the application script is
  * run.
- * 
+ *
  * <Licence>
- * 
- * This program is free software: you can redistribute it and/or modify 
+ *
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
@@ -22,8 +22,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * @package    meekphp
+ * @subpackage index
  * @author     Michael Edwards <meekcode.com@gmail.com>
  * @copyright  2014 Michael Edwards
  * @license    http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
@@ -41,7 +42,7 @@ define("__PATH__", realpath(dirname(__FILE__)) . '/');
 require_once(__PATH__ . 'meek/object.php');
 require_once(__PATH__ . 'meek/singleton.php');
 require_once(__PATH__ . 'meek/service.php');
-require_once(__PATH__ . 'meek/application.php');
+require_once(__PATH__ . 'meek/module.php');
 require_once(__PATH__ . 'meek/kernel.php');
 
 /* Run config script */
