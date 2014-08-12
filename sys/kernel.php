@@ -1,6 +1,6 @@
 <?php
 /**
- * <meek/kernel.php>
+ * <sys/kernel.php>
  *
  * This file contains the meekKernel class.
  *
@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    meekphp-system
+ * @package    meekphp-sys
  * @subpackage kernel
  * @author     Michael Edwards <meekcode.com@gmail.com>
  * @copyright  2014 Michael Edwards
@@ -32,13 +32,13 @@
  * through __get magic method. Kernel also loads applications and runs specific
  * tasks on request.
  *
- * @package    meekphp-system
+ * @package    meekphp-sys
  * @subpackage kernel
  */
 final class meekKernel extends meekSingleton {
 
     /**
-     * @var meekService[] $services Array of loaded services.
+     * @var mixed[] $services Array of loaded services.
      */
     private $services = array();
 
@@ -51,9 +51,9 @@ final class meekKernel extends meekSingleton {
      * Accessor for kernel services.
      *
      * @param  string $_name Service name.
-     * @return meekService|null Reference to service or null on failure.
+     * @return mixed|null Reference to service or null on failure.
      */
-    final public function __get($_name) {
+    public function __get($_name) {
 
         /* if service name is valid, return reference to service */
         $name = strtolower($_name);
@@ -71,7 +71,7 @@ final class meekKernel extends meekSingleton {
      * @param  string $_name Name of the service class to load.
      * @return boolean True on successful, false on failure.
      */
-    final public function load($_name) {
+    public function load($_name) {
 
         /* if service name already loaded, return true */
         $name = strtolower($_name);
@@ -80,7 +80,7 @@ final class meekKernel extends meekSingleton {
         }
 
         /* load service class file, return false on failure */
-        $file = __PATH__ . 'services/' . $name . '/' . $name . '.php';
+        $file = __PATH__ . 'srv/' . $name . '/' . $name . '.php';
         if (file_exists($file) == false) {
             return (false);
         }
@@ -98,12 +98,13 @@ final class meekKernel extends meekSingleton {
     }
 
     /**
-     * Process and run a command.
+     * Process and run a command. A command is passed in the format:
+     * $_command = "application/task/parm1/parm2/../parmN"
      *
      * @param  string $_command Command string to process and run.
      * @return boolean
      */
-    final public function run($_command = '') {
+    public function run($_command = '') {
 
         /* block recursion */
         if ($this->running == true) {

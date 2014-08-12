@@ -1,11 +1,8 @@
 <?php
 /**
- * <meek/object.php>
+ * <sys/application.php>
  *
- * This file contains the application script.
- *
- * All modules and their config are to be placed in this file as well as the
- * running of the kernel to load controllers.
+ * This file contains the meekApplication base class.
  *
  * <Licence>
  *
@@ -22,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    meekphp-system
- * @subpackage object
+ * @package    meekphp-sys
+ * @subpackage application
  * @author     Michael Edwards <meekcode.com@gmail.com>
  * @copyright  2014 Michael Edwards
  * @license    http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
@@ -31,31 +28,12 @@
  */
 
 /**
- * This is the base class for all other classes used in meekphp.
+ * This is the base class for all applications to be used in meekphp.
  *
- * @package    meekphp-system
- * @subpackage object
+ * @package    meekphp-sys
+ * @subpackage application
  */
-abstract class meekObject {
+abstract class meekApplication extends meekObject {
 
-    /**
-     * Return reference to kernel.
-     *
-     * @return meekKernel
-     */
-    final protected function _meek() {
-        return (meekKernel::instance());
-    }
-
-    /**
-     * Redirect the browser to another URL.
-     *
-     * @param  string $_url
-     * @return void
-     */
-    final protected function _redirect($_url) {
-        header('Location: ' . $_url);
-        exit();
-    }
 }
 

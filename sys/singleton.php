@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    meekphp-system
+ * @package    meekphp-sys
  * @subpackage singleton
  * @author     Michael Edwards <meekcode.com@gmail.com>
  * @copyright  2014 Michael Edwards
@@ -30,7 +30,7 @@
 /**
  * This is the singleton pattern base class for the kernel.
  *
- * @package    meekphp-system
+ * @package    meekphp-sys
  * @subpackage singleton
  */
 abstract class meekSingleton extends meekObject {

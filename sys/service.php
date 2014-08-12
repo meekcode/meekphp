@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    meekphp-system
+ * @package    meekphp-sys
  * @subpackage service
  * @author     Michael Edwards <meekcode.com@gmail.com>
  * @copyright  2014 Michael Edwards
@@ -30,13 +30,13 @@
 /**
  * This is the base class for all services to be used in meekphp.
  *
- * @package    meekphp-system
+ * @package    meekphp-sys
  * @subpackage service
  */
 abstract class meekService extends meekObject {
 
     /**
-     * @var meekService $child Reference to child object.
+     * @var mixed $child Reference to child object.
      */
     private $child = null;
 
@@ -46,13 +46,13 @@ abstract class meekService extends meekObject {
     private $data = array();
 
     /**
-     * @var meekService $parent Reference to parent object.
+     * @var mixed $parent Reference to parent object.
      */
     private $parent = null;
 
     /**
-     * Public methods are called from child ojbect if this object is a parent
-     * and requested method doesn't exist in object.
+     * Public methods are called from child oBJect if this object is a parent
+     * and requested method doesn't exist.
      *
      * @param  string $_name Method name.
      * @param  mixed[] $_args Method parameters.
@@ -79,7 +79,7 @@ abstract class meekService extends meekObject {
      * Finalised constructor saves parent object reference and calls
      * overloadable init method.
      *
-     * @param meekService $_parent Reference to parent.
+     * @param mixed $_parent Reference to parent.
      */
     final public function __construct($_parent = null) {
         $this->parent = $_parent;
@@ -99,8 +99,14 @@ abstract class meekService extends meekObject {
      * @param  string $_name Property name.
      * @return mixed|null Return property value or null.
      */
-    final public function __get($_name)
-    {
+    final public function __get($_name) {
+
+        /* allow sub classes to overload part of the accessor function */
+        $name = $this->_get($_name);
+        if ($name != null) {
+            $_name = $name;
+        }
+
         /* if parent is present, access parent properties */
         $name = strtolower($_name);
         if ($this->parent != null) {
@@ -123,6 +129,12 @@ abstract class meekService extends meekObject {
      */
     final public function __set($_name, $_value) {
 
+        /* allow sub classes to overload part of the mutator function */
+        $name = $this->_set($_name, $_value);
+        if ($name != null) {
+            $_name = $name;
+        }
+
         /* if parent is present, mutate parent properties */
         $name = strtolower($_name);
         if ($this->parent != null) {
@@ -140,6 +152,12 @@ abstract class meekService extends meekObject {
      * @return void
      */
     final public function __unset($_name) {
+
+        /* allow sub classes to overload part of the unset function */
+        $name = $this->_unset($_name);
+        if ($name != null) {
+            $_name = $name;
+        }
 
         /* if property exists, unset it */
         $name = strtolower($_name);
@@ -169,10 +187,20 @@ abstract class meekService extends meekObject {
     /**
      * Return properties array.
      *
-     * @return mixed[]
+     * @return mixed[] Return a copy of the data array.
      */
     final protected function _data() {
         return ($this->data);
+    }
+
+    /**
+     * Overloadable get method for sub classes.
+     *
+     * @param  string $_name Name of property.
+     * @return string Name of property to get in main get method.
+     */
+    protected function _get($_name) {
+        return (null);
     }
 
     /**
@@ -221,10 +249,31 @@ abstract class meekService extends meekObject {
     /**
      * Return reference to parent object.
      *
-     * @return meekService Reference to parent object.
+     * @return mixed Reference to parent object.
      */
     final protected function _parent() {
         return ($this->parent);
+    }
+
+    /**
+     * Overloadable set method for sub classes.
+     *
+     * @param  string $_name Name of property.
+     * @param  mixed $_value Value of property.
+     * @return string Name of property to access in main set method.
+     */
+    protected function _set($_name, $_value) {
+        return (null);
+    }
+
+    /**
+     * Overloadable unset method for sub classes.
+     *
+     * @param  string $_name Name of property.
+     * @return string Name of property to unset in main unset method.
+     */
+    protected function _unset($_name) {
+        return (null);
     }
 }
 
