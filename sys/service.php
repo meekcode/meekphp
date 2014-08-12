@@ -161,7 +161,7 @@ abstract class meekService extends meekObject {
 
         /* if property exists, unset it */
         $name = strtolower($_name);
-        if (array_key_exists($name, $this->data) {
+        if (array_key_exists($name, $this->data)) {
             unset($this->data[$name]);
         }
     }
