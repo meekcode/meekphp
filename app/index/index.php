@@ -5,7 +5,7 @@ class applicationIndex extends meekApplication {
     
     /* default task */
     public function index() {
-        $this->_meek()->example->hello();
+        $this->_kernel()->example->hello();
         return (true);
     }
 }

@@ -32,8 +32,8 @@
  */
 
 /* enable/disable error reporting */
-// ini_set('error_reporting', E_ALL);
-// ini_set('display_errors', 'On');
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 'On');
 
 /* save current server path */
 define("__PATH__", realpath(dirname(__FILE__)) . '/');

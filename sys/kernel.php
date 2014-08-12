@@ -120,7 +120,7 @@ final class meekKernel extends meekSingleton {
         if (strlen($command[0]) > 0) {
             $name = strtolower($command[0]);
         }
-        $file = __PATH__ . 'applications/' . $name . '/' . $name . '.php';
+        $file = __PATH__ . 'app/' . $name . '/' . $name . '.php';
         if (file_exists($file) == false) {
             return ($this->running = false);
         }
